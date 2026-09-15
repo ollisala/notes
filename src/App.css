@@ -1,0 +1,214 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100svh;
+  max-width: 480px;
+  margin: 0 auto;
+  background: var(--bg);
+}
+
+.app-header {
+  flex: none;
+  padding: env(safe-area-inset-top, 0px) 20px 8px;
+  text-align: center;
+}
+
+.app-header h1 {
+  margin: 8px 0 0;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.app-main {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: 0 16px;
+}
+
+.tab-bar {
+  flex: none;
+  display: flex;
+  border-top: 1px solid var(--border);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  background: var(--surface);
+}
+
+.tab-button {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 8px 0 6px;
+  background: none;
+  border: none;
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.tab-button-active {
+  color: var(--accent);
+}
+
+.tab-icon {
+  font-size: 22px;
+  line-height: 1;
+}
+
+/* Quiz screens */
+
+.quiz {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 0 24px;
+  min-height: 100%;
+}
+
+.score {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.staff-view {
+  width: 100%;
+  max-width: 360px;
+  color: var(--text);
+}
+
+.fretboard-view {
+  width: 100%;
+  max-width: 360px;
+  color: var(--text);
+}
+
+.fret-string-label {
+  fill: var(--text-secondary);
+}
+
+.fret-dot-idle {
+  fill: var(--idle-dot);
+}
+
+.fret-dot-correct {
+  fill: var(--green);
+}
+
+.fret-dot-wrong {
+  fill: var(--red);
+}
+
+.fret-dot-reveal {
+  fill: var(--green);
+  opacity: 0.4;
+}
+
+.feedback {
+  font-size: 17px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.feedback-correct {
+  color: var(--green);
+}
+
+.feedback-wrong {
+  color: var(--red);
+}
+
+.feedback-title {
+  margin: 0;
+}
+
+.feedback-detail {
+  margin: 2px 0 0;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text-secondary);
+}
+
+.target-note {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.target-note-label {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.target-note-value {
+  font-size: 56px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.note-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  width: 100%;
+  max-width: 360px;
+}
+
+.note-button {
+  padding: 14px 0;
+  font-size: 20px;
+  font-weight: 600;
+  border: none;
+  border-radius: 12px;
+  background: var(--accent);
+  color: #fff;
+}
+
+.note-button:disabled {
+  opacity: 0.55;
+}
+
+.note-button-correct {
+  background: var(--green);
+  opacity: 1;
+}
+
+.note-button-wrong {
+  background: var(--red);
+  opacity: 1;
+}
+
+.next-button {
+  padding: 10px 28px;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--accent);
+}
+
+/* Compact landscape phones: shrink the biggest elements so everything still fits without
+   needing to scroll past it. */
+@media (max-height: 420px) {
+  .quiz {
+    gap: 8px;
+    padding-top: 4px;
+  }
+
+  .target-note-value {
+    font-size: 34px;
+  }
+
+  .app-header {
+    padding-top: max(env(safe-area-inset-top, 0px), 4px);
+    padding-bottom: 2px;
+  }
+
+  .app-header h1 {
+    font-size: 17px;
+    margin: 2px 0 0;
+  }
+}
