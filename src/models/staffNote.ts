@@ -26,14 +26,6 @@ export function letterFor(value: StaffValue): string {
   return LETTERS[value];
 }
 
-export function randomStaffValue(exclude?: StaffValue): StaffValue {
-  let v = STAFF_VALUES[Math.floor(Math.random() * STAFF_VALUES.length)];
-  while (v === exclude) {
-    v = STAFF_VALUES[Math.floor(Math.random() * STAFF_VALUES.length)];
-  }
-  return v;
-}
-
 /**
  * Staff-line positions (even values) strictly outside the staff (0...8) that must be drawn
  * as ledger lines to reach the given note position.

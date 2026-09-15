@@ -1,13 +1,28 @@
 :root {
   --text: #1c1c1e;
   --text-secondary: #6b6b70;
-  --bg: #f2f2f7;
+  --bg: #eef1f8;
+  --bg-gradient: linear-gradient(180deg, #f3f5fb 0%, #e7ebf5 100%);
   --surface: #ffffff;
-  --border: #d9d9de;
-  --accent: #007aff;
-  --green: #34c759;
-  --red: #ff3b30;
-  --idle-dot: rgba(60, 60, 67, 0.2);
+  --surface-sunken: #f4f5fa;
+  --border: #e1e3ec;
+
+  --accent: #5b5bf0;
+  --accent-dark: #4646d6;
+  --accent-contrast: #ffffff;
+  --accent-soft: rgba(91, 91, 240, 0.12);
+
+  --green: #22b573;
+  --green-soft: rgba(34, 181, 115, 0.15);
+  --red: #ee4266;
+  --red-soft: rgba(238, 66, 102, 0.12);
+
+  --idle-dot: rgba(60, 60, 67, 0.18);
+
+  --shadow-sm: 0 1px 2px rgba(20, 20, 43, 0.06);
+  --shadow-md: 0 8px 20px -6px rgba(20, 20, 43, 0.18);
+  --shadow-button: 0 3px 0 var(--accent-dark);
+  --shadow-button-active: 0 1px 0 var(--accent-dark);
 
   color-scheme: light dark;
   font: 16px/1.4 system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
@@ -16,15 +31,56 @@
   -webkit-font-smoothing: antialiased;
 }
 
+/* Dark palette applies when the system prefers dark (unless the user explicitly chose light
+   via the toggle) or when the user explicitly chose dark, regardless of system preference. */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme='light']) {
     --text: #f2f2f7;
     --text-secondary: #9b9ba1;
-    --bg: #000000;
-    --surface: #1c1c1e;
-    --border: #38383a;
-    --idle-dot: rgba(235, 235, 245, 0.3);
+    --bg: #0e0e14;
+    --bg-gradient: linear-gradient(180deg, #14141d 0%, #0a0a10 100%);
+    --surface: #1c1c26;
+    --surface-sunken: #17171f;
+    --border: #2e2e3a;
+
+    --accent: #7b7bff;
+    --accent-dark: #5a5ae0;
+    --accent-soft: rgba(123, 123, 255, 0.18);
+
+    --green: #33d691;
+    --green-soft: rgba(51, 214, 145, 0.16);
+    --red: #ff5c7f;
+    --red-soft: rgba(255, 92, 127, 0.16);
+
+    --idle-dot: rgba(235, 235, 245, 0.28);
+
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 8px 24px -6px rgba(0, 0, 0, 0.5);
   }
+}
+
+:root[data-theme='dark'] {
+  --text: #f2f2f7;
+  --text-secondary: #9b9ba1;
+  --bg: #0e0e14;
+  --bg-gradient: linear-gradient(180deg, #14141d 0%, #0a0a10 100%);
+  --surface: #1c1c26;
+  --surface-sunken: #17171f;
+  --border: #2e2e3a;
+
+  --accent: #7b7bff;
+  --accent-dark: #5a5ae0;
+  --accent-soft: rgba(123, 123, 255, 0.18);
+
+  --green: #33d691;
+  --green-soft: rgba(51, 214, 145, 0.16);
+  --red: #ff5c7f;
+  --red-soft: rgba(255, 92, 127, 0.16);
+
+  --idle-dot: rgba(235, 235, 245, 0.28);
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 8px 24px -6px rgba(0, 0, 0, 0.5);
 }
 
 * {

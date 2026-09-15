@@ -1,11 +1,14 @@
 import { useState } from 'react';
 import { StaffView } from './StaffView';
-import { letterFor, randomStaffValue, type StaffValue } from '../models/staffNote';
+import { STAFF_VALUES, letterFor, type StaffValue } from '../models/staffNote';
+import { loadWeights, pickWeighted, recordResult, type Weights } from '../models/spacedPractice';
 
 const LETTERS = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
+const WEIGHTS_KEY = 'note-trainer-weights-staff';
 
 export function StaffQuiz() {
-  const [currentValue, setCurrentValue] = useState<StaffValue>(() => randomStaffValue());
+  const [weights, setWeights] = useState<Weights>(() => loadWeights(WEIGHTS_KEY));
+  const [currentValue, setCurrentValue] = useState<StaffValue>(() => pickWeighted(STAFF_VALUES, weights, String));
   const [selectedLetter, setSelectedLetter] = useState<string | null>(null);
   const [correctCount, setCorrectCount] = useState(0);
   const [totalCount, setTotalCount] = useState(0);
@@ -17,11 +20,13 @@ export function StaffQuiz() {
     if (hasAnswered) return;
     setSelectedLetter(letter);
     setTotalCount((n) => n + 1);
-    if (letter === correctLetter) setCorrectCount((n) => n + 1);
+    const correct = letter === correctLetter;
+    if (correct) setCorrectCount((n) => n + 1);
+    setWeights((w) => recordResult(WEIGHTS_KEY, w, String(currentValue), correct));
   }
 
   function next() {
-    setCurrentValue(randomStaffValue(currentValue));
+    setCurrentValue((cv) => pickWeighted(STAFF_VALUES, weights, String, cv));
     setSelectedLetter(null);
   }
 
@@ -33,17 +38,23 @@ export function StaffQuiz() {
   }
 
   return (
-    <div className="quiz">
+    <div className="quiz quiz-staff">
       <p className="score">
         Score: {correctCount}/{totalCount}
       </p>
 
-      <StaffView value={currentValue} />
+      <div className="stage">
+        <StaffView value={currentValue} />
+      </div>
 
       {hasAnswered && (
-        <p className={selectedLetter === correctLetter ? 'feedback feedback-correct' : 'feedback feedback-wrong'}>
-          {selectedLetter === correctLetter ? 'Correct!' : `Not quite — it's ${correctLetter}`}
-        </p>
+        <div className="feedback">
+          {selectedLetter === correctLetter ? (
+            <p className="feedback-correct">Correct!</p>
+          ) : (
+            <p className="feedback-title">Not quite — it's {correctLetter}</p>
+          )}
+        </div>
       )}
 
       <div className="note-grid">

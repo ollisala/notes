@@ -5,6 +5,9 @@ import { addSemitones, type PitchClass } from './pitchClass';
 /** Open-string pitch classes, low string (index 0) to high string (index 5). */
 export const OPEN_STRINGS: PitchClass[] = [4, 9, 2, 7, 11, 4]; // E A D G B E
 
+/** Human-readable labels, same order as OPEN_STRINGS. */
+export const STRING_LABELS = ['low E', 'A', 'D', 'G', 'B', 'high E'];
+
 export const FRET_COUNT = 6; // frets 0-5
 
 export function noteAt(stringIndex: number, fret: number): PitchClass {

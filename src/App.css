@@ -4,33 +4,59 @@
   height: 100svh;
   max-width: 480px;
   margin: 0 auto;
-  background: var(--bg);
+  background: var(--bg-gradient);
+  position: relative;
 }
 
-.app-header {
-  flex: none;
-  padding: env(safe-area-inset-top, 0px) 20px 8px;
-  text-align: center;
+.theme-toggle {
+  position: fixed;
+  top: max(env(safe-area-inset-top, 0px), 10px);
+  right: max(env(safe-area-inset-right, 0px), 14px);
+  z-index: 10;
+  width: 50px;
+  height: 28px;
+  padding: 2px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  align-items: center;
 }
 
-.app-header h1 {
-  margin: 8px 0 0;
-  font-size: 22px;
-  font-weight: 600;
+.theme-toggle-knob {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  line-height: 1;
+  background: var(--surface-sunken);
+  transform: translateX(0);
+  transition: transform 0.2s ease;
+}
+
+.theme-toggle-knob-dark {
+  transform: translateX(20px);
 }
 
 .app-main {
   flex: 1 1 auto;
   overflow-y: auto;
-  padding: 0 16px;
+  padding: max(env(safe-area-inset-top, 0px), 10px) 16px 0;
 }
 
 .tab-bar {
   flex: none;
   display: flex;
-  border-top: 1px solid var(--border);
-  padding-bottom: env(safe-area-inset-bottom, 0px);
+  gap: 6px;
+  padding: 6px 12px calc(6px + env(safe-area-inset-bottom, 0px));
   background: var(--surface);
+  box-shadow: 0 -1px 0 var(--border), var(--shadow-md);
+  position: relative;
+  z-index: 1;
 }
 
 .tab-button {
@@ -39,15 +65,23 @@
   flex-direction: column;
   align-items: center;
   gap: 2px;
-  padding: 8px 0 6px;
+  padding: 6px 0;
   background: none;
   border: none;
+  border-radius: 14px;
   font-size: 11px;
+  font-weight: 600;
   color: var(--text-secondary);
+  transition: background-color 0.18s ease, color 0.18s ease, transform 0.12s ease;
+}
+
+.tab-button:active {
+  transform: scale(0.94);
 }
 
 .tab-button-active {
   color: var(--accent);
+  background: var(--accent-soft);
 }
 
 .tab-icon {
@@ -61,30 +95,46 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 16px;
-  padding: 12px 0 24px;
+  gap: 14px;
+  padding: 0 0 16px;
   min-height: 100%;
 }
 
 .score {
-  font-size: 14px;
-  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent);
+  background: var(--accent-soft);
+  padding: 4px 14px;
+  border-radius: 999px;
+  letter-spacing: 0.2px;
+}
+
+.stage {
+  width: 100%;
+  max-width: 340px;
+  background: var(--surface);
+  border-radius: 20px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border);
+  padding: 10px 10px;
 }
 
 .staff-view {
+  display: block;
   width: 100%;
-  max-width: 360px;
   color: var(--text);
 }
 
 .fretboard-view {
+  display: block;
   width: 100%;
-  max-width: 360px;
   color: var(--text);
 }
 
 .fret-string-label {
   fill: var(--text-secondary);
+  font-weight: 600;
 }
 
 .fret-dot-idle {
@@ -101,50 +151,88 @@
 
 .fret-dot-reveal {
   fill: var(--green);
-  opacity: 0.4;
+  opacity: 0.45;
 }
 
 .feedback {
-  font-size: 17px;
-  font-weight: 600;
+  width: 100%;
+  max-width: 360px;
   text-align: center;
+  animation: feedback-in 0.22s ease-out;
+}
+
+@keyframes feedback-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .feedback-correct {
+  font-size: 17px;
+  font-weight: 700;
   color: var(--green);
 }
 
 .feedback-wrong {
-  color: var(--red);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .feedback-title {
   margin: 0;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--red);
 }
 
 .feedback-detail {
-  margin: 2px 0 0;
+  margin: 0;
   font-size: 14px;
-  font-weight: 400;
+  font-weight: 500;
   color: var(--text-secondary);
+}
+
+.feedback-theory {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.5;
+  text-align: left;
+  color: var(--text);
+  background: var(--surface-sunken);
+  border-left: 3px solid var(--accent);
+  border-radius: 10px;
+  padding: 10px 12px;
 }
 
 .target-note {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: 2px;
 }
 
 .target-note-label {
-  font-size: 14px;
+  font-size: 13px;
+  font-weight: 600;
   color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
 }
 
 .target-note-value {
-  font-size: 56px;
-  font-weight: 700;
+  font-size: 48px;
+  font-weight: 800;
   line-height: 1;
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
 }
 
 .note-grid {
@@ -156,59 +244,195 @@
 }
 
 .note-button {
-  padding: 14px 0;
-  font-size: 20px;
-  font-weight: 600;
+  padding: 13px 0;
+  font-size: 19px;
+  font-weight: 700;
   border: none;
-  border-radius: 12px;
+  border-radius: 14px;
   background: var(--accent);
-  color: #fff;
+  color: var(--accent-contrast);
+  box-shadow: var(--shadow-button);
+  transition: transform 0.1s ease, box-shadow 0.1s ease, background-color 0.15s ease, opacity 0.15s ease;
+}
+
+.note-button:not(:disabled):active {
+  transform: translateY(2px);
+  box-shadow: var(--shadow-button-active);
 }
 
 .note-button:disabled {
-  opacity: 0.55;
+  opacity: 0.4;
+  box-shadow: none;
 }
 
 .note-button-correct {
   background: var(--green);
+  box-shadow: 0 3px 0 color-mix(in srgb, var(--green) 70%, black);
   opacity: 1;
 }
 
 .note-button-wrong {
   background: var(--red);
+  box-shadow: 0 3px 0 color-mix(in srgb, var(--red) 70%, black);
   opacity: 1;
 }
 
 .next-button {
-  padding: 10px 28px;
+  padding: 10px 30px;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 700;
   border: none;
-  border-radius: 10px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  color: var(--accent);
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--accent-contrast);
+  box-shadow: var(--shadow-button);
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
 }
 
-/* Compact landscape phones: shrink the biggest elements so everything still fits without
-   needing to scroll past it. */
-@media (max-height: 420px) {
+.next-button:active {
+  transform: translateY(2px);
+  box-shadow: var(--shadow-button-active);
+}
+
+/* Compact landscape phones: there's plenty of width but very little height, so lay the stage
+   out beside the controls (grid) instead of stacking everything in one tall column. */
+@media (orientation: landscape) and (max-height: 500px) {
+  .app {
+    max-width: 680px;
+  }
+
+  .app-main {
+    padding-top: max(env(safe-area-inset-top, 0px), 4px);
+    display: flex;
+    align-items: center;
+  }
+
+  .theme-toggle {
+    width: 40px;
+    height: 22px;
+  }
+
+  .theme-toggle-knob {
+    width: 18px;
+    height: 18px;
+    font-size: 10px;
+  }
+
+  .theme-toggle-knob-dark {
+    transform: translateX(18px);
+  }
+
+  .tab-bar {
+    padding: 3px 10px calc(3px + env(safe-area-inset-bottom, 0px));
+    gap: 4px;
+  }
+
+  .tab-button {
+    flex-direction: row;
+    gap: 6px;
+    padding: 4px 0;
+  }
+
+  .tab-icon {
+    font-size: 16px;
+  }
+
   .quiz {
-    gap: 8px;
-    padding-top: 4px;
+    display: grid;
+    width: 100%;
+    column-gap: 18px;
+    row-gap: 4px;
+    align-items: center;
+    padding: 4px 0;
+    min-height: 0;
+  }
+
+  .quiz-staff {
+    grid-template-columns: auto 1fr;
+    grid-template-areas:
+      'stage score'
+      'stage feedback'
+      'stage grid'
+      'stage next';
+  }
+
+  .quiz-guitar {
+    grid-template-columns: auto 1fr;
+    grid-template-areas:
+      'stage score'
+      'stage target'
+      'stage feedback'
+      'stage next';
+  }
+
+  .stage {
+    grid-area: stage;
+    max-width: 190px;
+    padding: 6px;
+    align-self: center;
+  }
+
+  .score {
+    grid-area: score;
+    justify-self: start;
+  }
+
+  .target-note {
+    grid-area: target;
+    align-items: flex-start;
+    gap: 0;
   }
 
   .target-note-value {
-    font-size: 34px;
+    font-size: 28px;
   }
 
-  .app-header {
-    padding-top: max(env(safe-area-inset-top, 0px), 4px);
-    padding-bottom: 2px;
+  .feedback {
+    grid-area: feedback;
+    max-width: none;
+    text-align: left;
   }
 
-  .app-header h1 {
-    font-size: 17px;
-    margin: 2px 0 0;
+  .feedback-correct,
+  .feedback-title {
+    font-size: 14px;
+  }
+
+  .feedback-detail {
+    font-size: 12px;
+  }
+
+  .feedback-theory {
+    font-size: 11.5px;
+    line-height: 1.35;
+    padding: 6px 8px;
+  }
+
+  .note-grid {
+    grid-area: grid;
+    max-width: 260px;
+    gap: 6px;
+  }
+
+  .note-button {
+    padding: 7px 0;
+    font-size: 14px;
+    border-radius: 10px;
+    box-shadow: 0 2px 0 var(--accent-dark);
+  }
+
+  .note-button-correct {
+    box-shadow: 0 2px 0 color-mix(in srgb, var(--green) 70%, black);
+  }
+
+  .note-button-wrong {
+    box-shadow: 0 2px 0 color-mix(in srgb, var(--red) 70%, black);
+  }
+
+  .next-button {
+    grid-area: next;
+    justify-self: start;
+    padding: 6px 20px;
+    font-size: 13px;
   }
 }
