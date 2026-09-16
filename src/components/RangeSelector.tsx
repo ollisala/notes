@@ -10,6 +10,7 @@ export function RangeSelector({ range, onChange }: RangeSelectorProps) {
 
   return (
     <div className="range-picker">
+      <p className="range-heading">Note range</p>
       <div className="range-selector">
         {STAFF_RANGES.map(({ key, label }) => (
           <button

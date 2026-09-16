@@ -1,15 +1,20 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { StaffView } from './StaffView';
 import { RangeSelector } from './RangeSelector';
 import { allStaffPrompts, noteNameFor, pickAnswerOptions, promptKey, type StaffPrompt } from '../models/staffNote';
 import { loadWeights, pickWeighted, recordResult, type Weights } from '../models/spacedPractice';
 import { filterByStaffRange, loadStaffRange, saveStaffRange, type StaffRange } from '../models/staffRange';
+import type { Score } from '../App';
 
 const WEIGHTS_KEY = 'note-trainer-weights-staff';
 const RANGE_KEY = 'note-trainer-staff-range';
 const ALL_PROMPTS = allStaffPrompts();
 
-export function StaffQuiz() {
+interface StaffQuizProps {
+  onScoreChange: (score: Score) => void;
+}
+
+export function StaffQuiz({ onScoreChange }: StaffQuizProps) {
   const [range, setRange] = useState<StaffRange>(() => loadStaffRange(RANGE_KEY));
 
   function changeRange(next: StaffRange) {
@@ -19,16 +24,16 @@ export function StaffQuiz() {
 
   return (
     <div className="quiz quiz-staff">
-      <RangeSelector range={range} onChange={changeRange} />
-
       {/* Remounts the round whenever the range changes, so the current note always comes
           from the newly selected pool and the session score resets for the new mode. */}
-      <StaffRound key={range} range={range} />
+      <StaffRound key={range} range={range} onScoreChange={onScoreChange} />
+
+      <RangeSelector range={range} onChange={changeRange} />
     </div>
   );
 }
 
-function StaffRound({ range }: { range: StaffRange }) {
+function StaffRound({ range, onScoreChange }: { range: StaffRange; onScoreChange: (score: Score) => void }) {
   const pool = useMemo(() => filterByStaffRange(ALL_PROMPTS, range), [range]);
 
   const [weights, setWeights] = useState<Weights>(() => loadWeights(WEIGHTS_KEY));
@@ -36,6 +41,10 @@ function StaffRound({ range }: { range: StaffRange }) {
   const [selectedName, setSelectedName] = useState<string | null>(null);
   const [correctCount, setCorrectCount] = useState(0);
   const [totalCount, setTotalCount] = useState(0);
+
+  useEffect(() => {
+    onScoreChange({ correct: correctCount, total: totalCount });
+  }, [correctCount, totalCount, onScoreChange]);
 
   const options = useMemo(() => pickAnswerOptions(prompt, pool), [prompt, pool]);
 
@@ -65,9 +74,7 @@ function StaffRound({ range }: { range: StaffRange }) {
 
   return (
     <>
-      <p className="score">
-        Score: {correctCount}/{totalCount}
-      </p>
+      <p className="target-note-label">What note is this?</p>
 
       <div className="stage">
         <StaffView value={prompt.value} sharp={prompt.sharp} />

@@ -3,8 +3,9 @@ import { ledgerLinePositions, type StaffValue } from '../models/staffNote';
 const LINE_SPACING = 16;
 const VIEW_WIDTH = 320;
 // Tall enough for the extended range down to written E3 (open low-E string) and up to A5,
-// with stems and ledger lines, without clipping.
-const VIEW_HEIGHT = LINE_SPACING * 14;
+// with stems and ledger lines, without clipping - trimmed to the minimum safe margin so the
+// staff doesn't take up more vertical space than it needs.
+const VIEW_HEIGHT = LINE_SPACING * 13;
 const STAFF_TOP = (VIEW_HEIGHT - LINE_SPACING * 4) / 2;
 const STAFF_LEFT = 40;
 const STAFF_RIGHT = VIEW_WIDTH - 24;

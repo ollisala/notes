@@ -11,9 +11,15 @@
 .settings-cluster {
   flex: none;
   display: flex;
-  justify-content: flex-end;
+  align-items: center;
+  justify-content: space-between;
   gap: 8px;
   padding: max(env(safe-area-inset-top, 0px), 6px) 16px 4px;
+}
+
+.settings-toggles {
+  display: flex;
+  gap: 8px;
 }
 
 .theme-toggle,
@@ -99,7 +105,15 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
+}
+
+.range-heading {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
 }
 
 .range-selector {
@@ -162,25 +176,8 @@
   padding: 10px 10px;
 }
 
-/* Sight Read shows two stages (staff + fretboard) stacked, so each gets a bit less room to
-   keep the total height in check on small phones. */
 .quiz-sightread {
-  gap: 6px;
-}
-
-.quiz-sightread .stage-prompt {
-  max-width: 140px;
-  padding: 6px;
-}
-
-.quiz-sightread .stage-answer {
-  max-width: 250px;
-  padding: 8px;
-}
-
-.quiz-sightread .feedback-theory {
-  font-size: 12.5px;
-  padding: 8px 10px;
+  gap: 11px;
 }
 
 .staff-view {
@@ -381,6 +378,11 @@
     padding: max(env(safe-area-inset-top, 0px), 4px) 10px 4px;
   }
 
+  .settings-cluster .score {
+    font-size: 11px;
+    padding: 3px 10px;
+  }
+
   .theme-toggle,
   .handedness-toggle {
     width: 40px;
@@ -423,16 +425,20 @@
     grid-template-columns: auto 1fr;
     grid-template-areas:
       'stage range'
-      'stage score'
+      'stage label'
       'stage feedback'
       'stage grid'
       'stage next';
   }
 
+  .quiz-staff .target-note-label {
+    grid-area: label;
+    justify-self: start;
+  }
+
   .quiz-guitar {
     grid-template-columns: auto 1fr;
     grid-template-areas:
-      'stage score'
       'stage target'
       'stage feedback'
       'stage next';
@@ -443,7 +449,7 @@
     grid-template-rows: auto auto auto auto auto;
     grid-template-areas:
       'prompt range'
-      'prompt score'
+      'prompt label'
       'prompt feedback'
       'answer feedback'
       'answer next';
@@ -465,14 +471,20 @@
     font-size: 11px;
   }
 
-  .range-description {
+  .range-description,
+  .range-heading {
     display: none;
+  }
+
+  .quiz-sightread .target-note-label {
+    grid-area: label;
+    justify-self: start;
   }
 
   .quiz-sightread .stage-prompt {
     grid-area: prompt;
-    max-width: 150px;
-    padding: 4px;
+    max-width: 190px;
+    padding: 6px;
     align-self: center;
   }
 
@@ -488,11 +500,6 @@
     max-width: 190px;
     padding: 6px;
     align-self: center;
-  }
-
-  .score {
-    grid-area: score;
-    justify-self: start;
   }
 
   .target-note {

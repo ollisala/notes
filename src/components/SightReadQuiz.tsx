@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { StaffView } from './StaffView';
 import { FretboardView } from './FretboardView';
 import { FretboardFeedback } from './FretboardFeedback';
@@ -7,6 +7,7 @@ import { useFretboardQuiz } from '../hooks/useFretboardQuiz';
 import { exactPitchMatch, positionsForExactPitch } from '../models/fretboard';
 import { allStaffPrompts, absolutePitchFor, promptKey, type StaffPrompt } from '../models/staffNote';
 import { filterByStaffRange, loadStaffRange, saveStaffRange, type StaffRange } from '../models/staffRange';
+import type { Score } from '../App';
 
 const WEIGHTS_KEY = 'note-trainer-weights-sightread';
 const RANGE_KEY = 'note-trainer-sightread-range';
@@ -23,10 +24,11 @@ function matchFor(prompt: StaffPrompt) {
 
 interface SightReadQuizProps {
   mirrored: boolean;
+  onScoreChange: (score: Score) => void;
 }
 
 /** Shows a note on the staff; the answer is tapping where it's played on the fretboard. */
-export function SightReadQuiz({ mirrored }: SightReadQuizProps) {
+export function SightReadQuiz({ mirrored, onScoreChange }: SightReadQuizProps) {
   const [range, setRange] = useState<StaffRange>(() => loadStaffRange(RANGE_KEY));
 
   function changeRange(next: StaffRange) {
@@ -36,24 +38,34 @@ export function SightReadQuiz({ mirrored }: SightReadQuizProps) {
 
   return (
     <div className="quiz quiz-sightread">
-      <RangeSelector range={range} onChange={changeRange} />
-
       {/* Remounts the round whenever the range changes, so the current note always comes
           from the newly selected pool and the session score resets for the new mode. */}
-      <SightReadRound key={range} range={range} mirrored={mirrored} />
+      <SightReadRound key={range} range={range} mirrored={mirrored} onScoreChange={onScoreChange} />
+
+      <RangeSelector range={range} onChange={changeRange} />
     </div>
   );
 }
 
-function SightReadRound({ range, mirrored }: { range: StaffRange; mirrored: boolean }) {
+function SightReadRound({
+  range,
+  mirrored,
+  onScoreChange,
+}: {
+  range: StaffRange;
+  mirrored: boolean;
+  onScoreChange: (score: Score) => void;
+}) {
   const pool = filterByStaffRange(REACHABLE_POOL, range);
   const q = useFretboardQuiz(pool, WEIGHTS_KEY, promptKey, matchFor);
 
+  useEffect(() => {
+    onScoreChange({ correct: q.correctCount, total: q.totalCount });
+  }, [q.correctCount, q.totalCount, onScoreChange]);
+
   return (
     <>
-      <p className="score">
-        Score: {q.correctCount}/{q.totalCount}
-      </p>
+      <p className="target-note-label">Find this note on the fretboard</p>
 
       <div className="stage stage-prompt">
         <StaffView value={q.item.value} sharp={q.item.sharp} />

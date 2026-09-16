@@ -10,27 +10,38 @@ import './App.css';
 
 type Tab = 'staff' | 'guitar' | 'sightread';
 
+export interface Score {
+  correct: number;
+  total: number;
+}
+
 function App() {
   const [tab, setTab] = useState<Tab>('staff');
   const [theme, toggleTheme] = useTheme();
   const [handedness, toggleHandedness] = useHandedness();
+  const [score, setScore] = useState<Score>({ correct: 0, total: 0 });
   // Right-handed (the default) is the standard nut-on-left layout; left-handed mirrors it.
   const mirrored = handedness === 'left';
 
   return (
     <div className="app">
       <div className="settings-cluster">
-        <ThemeToggle theme={theme} onToggle={toggleTheme} />
-        <HandednessToggle handedness={handedness} onToggle={toggleHandedness} />
+        <p className="score">
+          Score: {score.correct}/{score.total}
+        </p>
+        <div className="settings-toggles">
+          <ThemeToggle theme={theme} onToggle={toggleTheme} />
+          <HandednessToggle handedness={handedness} onToggle={toggleHandedness} />
+        </div>
       </div>
 
       <main className="app-main">
         {tab === 'staff' ? (
-          <StaffQuiz />
+          <StaffQuiz onScoreChange={setScore} />
         ) : tab === 'guitar' ? (
-          <GuitarQuiz mirrored={mirrored} />
+          <GuitarQuiz mirrored={mirrored} onScoreChange={setScore} />
         ) : (
-          <SightReadQuiz mirrored={mirrored} />
+          <SightReadQuiz mirrored={mirrored} onScoreChange={setScore} />
         )}
       </main>
 
