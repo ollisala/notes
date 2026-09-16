@@ -14,7 +14,6 @@
   justify-content: flex-end;
   gap: 8px;
   padding: 4px 16px;
-  background: var(--surface);
 }
 
 .theme-toggle,
@@ -166,15 +165,22 @@
 /* Sight Read shows two stages (staff + fretboard) stacked, so each gets a bit less room to
    keep the total height in check on small phones. */
 .quiz-sightread {
-  gap: 8px;
+  gap: 6px;
 }
 
 .quiz-sightread .stage-prompt {
-  max-width: 220px;
+  max-width: 140px;
+  padding: 6px;
 }
 
 .quiz-sightread .stage-answer {
-  max-width: 270px;
+  max-width: 250px;
+  padding: 8px;
+}
+
+.quiz-sightread .feedback-theory {
+  font-size: 12.5px;
+  padding: 8px 10px;
 }
 
 .staff-view {
