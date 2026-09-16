@@ -13,7 +13,7 @@ export function HandednessToggle({ handedness, onToggle }: HandednessToggleProps
       type="button"
       className="handedness-toggle"
       onClick={onToggle}
-      aria-label={isRight ? 'Switch fretboard to left-handed (nut on left)' : 'Switch fretboard to right-handed (nut on right)'}
+      aria-label={isRight ? 'Switch fretboard to left-handed (nut on right)' : 'Switch fretboard to right-handed (nut on left)'}
     >
       <span className={isRight ? 'handedness-toggle-knob handedness-toggle-knob-right' : 'handedness-toggle-knob'}>
         {isRight ? 'R' : 'L'}

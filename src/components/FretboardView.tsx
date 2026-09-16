@@ -29,6 +29,11 @@ export function FretboardView({ correctPositions, answeredPosition, onTap, mirro
   // through this to flip the whole diagram horizontally for left-handed players.
   const mx = (x: number) => (mirrored ? VIEW_WIDTH - x : x);
 
+  // Standard tab/fretboard-diagram convention, matching the player's own downward view: the
+  // high string (index STRING_COUNT-1) is drawn on top, the low string (index 0) on the
+  // bottom - so this deliberately renders string 0 at the *largest* y, not the smallest.
+  const stringY = (string: number) => NECK_TOP + TOP_MARGIN + (STRING_COUNT - 1 - string) * STRING_SPACING;
+
   function dotClass(string: number, fret: number): string {
     if (!answeredPosition) return 'fret-dot fret-dot-idle';
     const isCorrectSpot = correctPositions.some((p) => p.string === string && p.fret === fret);
@@ -79,12 +84,12 @@ export function FretboardView({ correctPositions, answeredPosition, onTap, mirro
       })}
 
       {Array.from({ length: STRING_COUNT }, (_, string) => {
-        const y = NECK_TOP + TOP_MARGIN + string * STRING_SPACING;
+        const y = stringY(string);
         return <line key={string} x1={mx(LEFT_MARGIN)} y1={y} x2={mx(VIEW_WIDTH)} y2={y} stroke="currentColor" strokeWidth={1.5} />;
       })}
 
       {Array.from({ length: STRING_COUNT }, (_, string) => {
-        const y = NECK_TOP + TOP_MARGIN + string * STRING_SPACING;
+        const y = stringY(string);
         return (
           <text
             key={string}
@@ -107,7 +112,7 @@ export function FretboardView({ correctPositions, answeredPosition, onTap, mirro
           const cellMinX = fret === 0 ? 0 : LEFT_MARGIN + (fret - 1) * FRET_WIDTH;
           const cellMaxX = LEFT_MARGIN + fret * FRET_WIDTH;
           const rectX = mirrored ? VIEW_WIDTH - cellMaxX : cellMinX;
-          const y = NECK_TOP + TOP_MARGIN + string * STRING_SPACING;
+          const y = stringY(string);
           return (
             <rect
               key={`${string}-${fret}`}
@@ -127,7 +132,7 @@ export function FretboardView({ correctPositions, answeredPosition, onTap, mirro
       {Array.from({ length: STRING_COUNT }, (_, string) =>
         Array.from({ length: FRET_COUNT }, (_, fret) => {
           const x = mx(fret === 0 ? LEFT_MARGIN : LEFT_MARGIN + (fret - 0.5) * FRET_WIDTH);
-          const y = NECK_TOP + TOP_MARGIN + string * STRING_SPACING;
+          const y = stringY(string);
           return <circle key={`${string}-${fret}`} cx={x} cy={y} r={7} className={dotClass(string, fret)} pointerEvents="none" />;
         }),
       )}

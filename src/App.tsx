@@ -14,7 +14,8 @@ function App() {
   const [tab, setTab] = useState<Tab>('staff');
   const [theme, toggleTheme] = useTheme();
   const [handedness, toggleHandedness] = useHandedness();
-  const mirrored = handedness === 'right';
+  // Right-handed (the default) is the standard nut-on-left layout; left-handed mirrors it.
+  const mirrored = handedness === 'left';
 
   return (
     <div className="app">
