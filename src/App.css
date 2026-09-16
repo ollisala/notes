@@ -176,6 +176,17 @@
   padding: 10px 10px;
 }
 
+/* The prompt - what you're reading, not what you tap - stays plain so it visually reads as
+   display-only; only the interactive answer area (fretboard/buttons) looks like a pressable
+   card. */
+.quiz-staff .stage,
+.stage-prompt,
+.target-note {
+  background: none;
+  border: none;
+  box-shadow: none;
+}
+
 .quiz-sightread {
   gap: 11px;
 }
@@ -280,7 +291,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2px;
+  justify-content: center;
+  gap: 8px;
+  min-height: 150px;
 }
 
 .target-note-label {
@@ -292,13 +305,24 @@
 }
 
 .target-note-value {
-  font-size: 48px;
+  font-size: 88px;
   font-weight: 800;
   line-height: 1;
   background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
+}
+
+.answer-tile {
+  width: 100%;
+  max-width: 340px;
+  background: var(--surface-sunken);
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  padding: 12px;
+  display: flex;
+  justify-content: center;
 }
 
 .answer-grid {
@@ -439,9 +463,15 @@
   .quiz-guitar {
     grid-template-columns: auto 1fr;
     grid-template-areas:
+      'stage label'
       'stage target'
       'stage feedback'
       'stage next';
+  }
+
+  .quiz-guitar .target-note-label {
+    grid-area: label;
+    justify-self: start;
   }
 
   .quiz-sightread {
@@ -505,7 +535,14 @@
   .target-note {
     grid-area: target;
     align-items: flex-start;
+    justify-content: flex-start;
     gap: 0;
+    min-height: 0;
+    max-width: none;
+    padding: 0;
+    background: none;
+    border: none;
+    box-shadow: none;
   }
 
   .target-note-value {
@@ -533,9 +570,14 @@
     padding: 6px 8px;
   }
 
-  .answer-grid {
+  .answer-tile {
     grid-area: grid;
     max-width: 240px;
+    padding: 8px;
+  }
+
+  .answer-grid {
+    max-width: 100%;
     gap: 6px;
   }
 

@@ -1,34 +1,24 @@
 import { useEffect, useMemo, useState } from 'react';
 import { StaffView } from './StaffView';
-import { RangeSelector } from './RangeSelector';
 import { allStaffPrompts, noteNameFor, pickAnswerOptions, promptKey, type StaffPrompt } from '../models/staffNote';
 import { loadWeights, pickWeighted, recordResult, type Weights } from '../models/spacedPractice';
-import { filterByStaffRange, loadStaffRange, saveStaffRange, type StaffRange } from '../models/staffRange';
+import { filterByStaffRange, type StaffRange } from '../models/staffRange';
 import type { Score } from '../App';
 
 const WEIGHTS_KEY = 'note-trainer-weights-staff';
-const RANGE_KEY = 'note-trainer-staff-range';
 const ALL_PROMPTS = allStaffPrompts();
 
 interface StaffQuizProps {
+  range: StaffRange;
   onScoreChange: (score: Score) => void;
 }
 
-export function StaffQuiz({ onScoreChange }: StaffQuizProps) {
-  const [range, setRange] = useState<StaffRange>(() => loadStaffRange(RANGE_KEY));
-
-  function changeRange(next: StaffRange) {
-    setRange(next);
-    saveStaffRange(RANGE_KEY, next);
-  }
-
+export function StaffQuiz({ range, onScoreChange }: StaffQuizProps) {
   return (
     <div className="quiz quiz-staff">
       {/* Remounts the round whenever the range changes, so the current note always comes
           from the newly selected pool and the session score resets for the new mode. */}
       <StaffRound key={range} range={range} onScoreChange={onScoreChange} />
-
-      <RangeSelector range={range} onChange={changeRange} />
     </div>
   );
 }
@@ -90,12 +80,14 @@ function StaffRound({ range, onScoreChange }: { range: StaffRange; onScoreChange
         </div>
       )}
 
-      <div className="answer-grid">
-        {options.map((name) => (
-          <button key={name} className={buttonClass(name)} disabled={hasAnswered} onClick={() => selectOption(name)}>
-            {name}
-          </button>
-        ))}
+      <div className="answer-tile">
+        <div className="answer-grid">
+          {options.map((name) => (
+            <button key={name} className={buttonClass(name)} disabled={hasAnswered} onClick={() => selectOption(name)}>
+              {name}
+            </button>
+          ))}
+        </div>
       </div>
 
       <button className="next-button" style={{ visibility: hasAnswered ? 'visible' : 'hidden' }} onClick={next}>

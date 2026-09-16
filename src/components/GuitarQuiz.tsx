@@ -22,8 +22,9 @@ export function GuitarQuiz({ mirrored, onScoreChange }: GuitarQuizProps) {
 
   return (
     <div className="quiz quiz-guitar">
-      <div className="target-note">
-        <p className="target-note-label">Find this note</p>
+      <p className="target-note-label">Find this note</p>
+
+      <div className="stage target-note">
         <p className="target-note-value">{pitchName(q.target)}</p>
       </div>
 

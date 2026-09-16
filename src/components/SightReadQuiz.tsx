@@ -1,16 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { StaffView } from './StaffView';
 import { FretboardView } from './FretboardView';
 import { FretboardFeedback } from './FretboardFeedback';
-import { RangeSelector } from './RangeSelector';
 import { useFretboardQuiz } from '../hooks/useFretboardQuiz';
 import { exactPitchMatch, positionsForExactPitch } from '../models/fretboard';
 import { allStaffPrompts, absolutePitchFor, promptKey, type StaffPrompt } from '../models/staffNote';
-import { filterByStaffRange, loadStaffRange, saveStaffRange, type StaffRange } from '../models/staffRange';
+import { filterByStaffRange, type StaffRange } from '../models/staffRange';
 import type { Score } from '../App';
 
 const WEIGHTS_KEY = 'note-trainer-weights-sightread';
-const RANGE_KEY = 'note-trainer-sightread-range';
 
 // Open position (frets 0-5) only spans about two octaves on the neck, so most of the staff's
 // full range can't actually be played there in its exact octave. Only quiz on staff notes
@@ -23,26 +21,18 @@ function matchFor(prompt: StaffPrompt) {
 }
 
 interface SightReadQuizProps {
+  range: StaffRange;
   mirrored: boolean;
   onScoreChange: (score: Score) => void;
 }
 
 /** Shows a note on the staff; the answer is tapping where it's played on the fretboard. */
-export function SightReadQuiz({ mirrored, onScoreChange }: SightReadQuizProps) {
-  const [range, setRange] = useState<StaffRange>(() => loadStaffRange(RANGE_KEY));
-
-  function changeRange(next: StaffRange) {
-    setRange(next);
-    saveStaffRange(RANGE_KEY, next);
-  }
-
+export function SightReadQuiz({ range, mirrored, onScoreChange }: SightReadQuizProps) {
   return (
     <div className="quiz quiz-sightread">
       {/* Remounts the round whenever the range changes, so the current note always comes
           from the newly selected pool and the session score resets for the new mode. */}
       <SightReadRound key={range} range={range} mirrored={mirrored} onScoreChange={onScoreChange} />
-
-      <RangeSelector range={range} onChange={changeRange} />
     </div>
   );
 }
