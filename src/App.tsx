@@ -18,11 +18,6 @@ function App() {
 
   return (
     <div className="app">
-      <div className="settings-cluster">
-        <ThemeToggle theme={theme} onToggle={toggleTheme} />
-        <HandednessToggle handedness={handedness} onToggle={toggleHandedness} />
-      </div>
-
       <main className="app-main">
         {tab === 'staff' ? (
           <StaffQuiz />
@@ -32,6 +27,11 @@ function App() {
           <SightReadQuiz mirrored={mirrored} />
         )}
       </main>
+
+      <div className="settings-cluster">
+        <ThemeToggle theme={theme} onToggle={toggleTheme} />
+        <HandednessToggle handedness={handedness} onToggle={toggleHandedness} />
+      </div>
 
       <nav className="tab-bar">
         <button className={tab === 'staff' ? 'tab-button tab-button-active' : 'tab-button'} onClick={() => setTab('staff')}>

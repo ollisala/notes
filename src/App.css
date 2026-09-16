@@ -9,18 +9,18 @@
 }
 
 .settings-cluster {
-  position: fixed;
-  top: max(env(safe-area-inset-top, 0px), 10px);
-  right: max(env(safe-area-inset-right, 0px), 14px);
-  z-index: 10;
+  flex: none;
   display: flex;
+  justify-content: flex-end;
   gap: 8px;
+  padding: 4px 16px;
+  background: var(--surface);
 }
 
 .theme-toggle,
 .handedness-toggle {
-  width: 50px;
-  height: 28px;
+  width: 46px;
+  height: 24px;
   padding: 2px;
   border: 1px solid var(--border);
   border-radius: 999px;
@@ -32,8 +32,8 @@
 
 .theme-toggle-knob,
 .handedness-toggle-knob {
-  width: 22px;
-  height: 22px;
+  width: 18px;
+  height: 18px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -49,7 +49,7 @@
 
 .theme-toggle-knob-dark,
 .handedness-toggle-knob-right {
-  transform: translateX(20px);
+  transform: translateX(22px);
 }
 
 .app-main {
@@ -138,8 +138,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 14px;
-  padding: 0 0 16px;
+  gap: 11px;
+  padding: 0 0 10px;
   min-height: 100%;
 }
 
@@ -307,7 +307,7 @@
 }
 
 .note-button {
-  padding: 13px 0;
+  padding: 11px 0;
   font-size: 19px;
   font-weight: 700;
   border: none;
@@ -372,6 +372,7 @@
 
   .settings-cluster {
     gap: 6px;
+    padding: 4px 10px;
   }
 
   .theme-toggle,
