@@ -5,6 +5,12 @@ on:
     branches:
       - main
 
+# If two runs somehow get triggered for the same branch close together (e.g. a client that
+# sends duplicate push events), cancel the older one instead of racing two deploys.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build:
     environment: prod
