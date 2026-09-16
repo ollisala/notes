@@ -13,7 +13,7 @@
   display: flex;
   justify-content: flex-end;
   gap: 8px;
-  padding: 4px 16px;
+  padding: max(env(safe-area-inset-top, 0px), 6px) 16px 4px;
 }
 
 .theme-toggle,
@@ -54,7 +54,7 @@
 .app-main {
   flex: 1 1 auto;
   overflow-y: auto;
-  padding: max(env(safe-area-inset-top, 0px), 10px) 16px 0;
+  padding: 6px 16px 0;
 }
 
 .tab-bar {
@@ -371,14 +371,14 @@
   }
 
   .app-main {
-    padding-top: max(env(safe-area-inset-top, 0px), 4px);
+    padding-top: 4px;
     display: flex;
     align-items: center;
   }
 
   .settings-cluster {
     gap: 6px;
-    padding: 4px 10px;
+    padding: max(env(safe-area-inset-top, 0px), 4px) 10px 4px;
   }
 
   .theme-toggle,
