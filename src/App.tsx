@@ -1,30 +1,50 @@
 import { useState } from 'react';
 import { StaffQuiz } from './components/StaffQuiz';
 import { GuitarQuiz } from './components/GuitarQuiz';
+import { SightReadQuiz } from './components/SightReadQuiz';
 import { ThemeToggle } from './components/ThemeToggle';
+import { HandednessToggle } from './components/HandednessToggle';
 import { useTheme } from './useTheme';
+import { useHandedness } from './useHandedness';
 import './App.css';
 
-type Tab = 'staff' | 'guitar';
+type Tab = 'staff' | 'guitar' | 'sightread';
 
 function App() {
   const [tab, setTab] = useState<Tab>('staff');
   const [theme, toggleTheme] = useTheme();
+  const [handedness, toggleHandedness] = useHandedness();
+  const mirrored = handedness === 'right';
 
   return (
     <div className="app">
-      <ThemeToggle theme={theme} onToggle={toggleTheme} />
+      <div className="settings-cluster">
+        <ThemeToggle theme={theme} onToggle={toggleTheme} />
+        <HandednessToggle handedness={handedness} onToggle={toggleHandedness} />
+      </div>
 
-      <main className="app-main">{tab === 'staff' ? <StaffQuiz /> : <GuitarQuiz />}</main>
+      <main className="app-main">
+        {tab === 'staff' ? (
+          <StaffQuiz />
+        ) : tab === 'guitar' ? (
+          <GuitarQuiz mirrored={mirrored} />
+        ) : (
+          <SightReadQuiz mirrored={mirrored} />
+        )}
+      </main>
 
       <nav className="tab-bar">
         <button className={tab === 'staff' ? 'tab-button tab-button-active' : 'tab-button'} onClick={() => setTab('staff')}>
-          <span className="tab-icon">&#9834;</span>
-          <span>Notes</span>
+          Notes
         </button>
         <button className={tab === 'guitar' ? 'tab-button tab-button-active' : 'tab-button'} onClick={() => setTab('guitar')}>
-          <span className="tab-icon">&#127928;</span>
-          <span>Guitar</span>
+          Guitar
+        </button>
+        <button
+          className={tab === 'sightread' ? 'tab-button tab-button-active' : 'tab-button'}
+          onClick={() => setTab('sightread')}
+        >
+          Sight Read
         </button>
       </nav>
     </div>

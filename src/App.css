@@ -8,11 +8,17 @@
   position: relative;
 }
 
-.theme-toggle {
+.settings-cluster {
   position: fixed;
   top: max(env(safe-area-inset-top, 0px), 10px);
   right: max(env(safe-area-inset-right, 0px), 14px);
   z-index: 10;
+  display: flex;
+  gap: 8px;
+}
+
+.theme-toggle,
+.handedness-toggle {
   width: 50px;
   height: 28px;
   padding: 2px;
@@ -24,7 +30,8 @@
   align-items: center;
 }
 
-.theme-toggle-knob {
+.theme-toggle-knob,
+.handedness-toggle-knob {
   width: 22px;
   height: 22px;
   border-radius: 50%;
@@ -32,13 +39,16 @@
   align-items: center;
   justify-content: center;
   font-size: 12px;
+  font-weight: 700;
   line-height: 1;
   background: var(--surface-sunken);
+  color: var(--text-secondary);
   transform: translateX(0);
   transition: transform 0.2s ease;
 }
 
-.theme-toggle-knob-dark {
+.theme-toggle-knob-dark,
+.handedness-toggle-knob-right {
   transform: translateX(20px);
 }
 
@@ -62,15 +72,15 @@
 .tab-button {
   flex: 1;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 2px;
-  padding: 6px 0;
+  justify-content: center;
+  padding: 12px 0;
   background: none;
   border: none;
-  border-radius: 14px;
-  font-size: 11px;
-  font-weight: 600;
+  border-radius: 16px;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: -0.1px;
   color: var(--text-secondary);
   transition: background-color 0.18s ease, color 0.18s ease, transform 0.12s ease;
 }
@@ -84,12 +94,45 @@
   background: var(--accent-soft);
 }
 
-.tab-icon {
-  font-size: 22px;
-  line-height: 1;
+/* Quiz screens */
+
+.range-picker {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
 }
 
-/* Quiz screens */
+.range-selector {
+  display: flex;
+  gap: 4px;
+  padding: 3px;
+  background: var(--surface-sunken);
+  border-radius: 12px;
+}
+
+.range-button {
+  padding: 6px 16px;
+  font-size: 13px;
+  font-weight: 700;
+  border: none;
+  border-radius: 9px;
+  background: none;
+  color: var(--text-secondary);
+  transition: background-color 0.18s ease, color 0.18s ease;
+}
+
+.range-button-active {
+  background: var(--surface);
+  color: var(--accent);
+  box-shadow: var(--shadow-sm);
+}
+
+.range-description {
+  font-size: 12px;
+  color: var(--text-secondary);
+  text-align: center;
+}
 
 .quiz {
   display: flex;
@@ -120,6 +163,20 @@
   padding: 10px 10px;
 }
 
+/* Sight Read shows two stages (staff + fretboard) stacked, so each gets a bit less room to
+   keep the total height in check on small phones. */
+.quiz-sightread {
+  gap: 8px;
+}
+
+.quiz-sightread .stage-prompt {
+  max-width: 220px;
+}
+
+.quiz-sightread .stage-answer {
+  max-width: 270px;
+}
+
 .staff-view {
   display: block;
   width: 100%;
@@ -135,6 +192,12 @@
 .fret-string-label {
   fill: var(--text-secondary);
   font-weight: 600;
+}
+
+.fret-number-label {
+  fill: var(--text-secondary);
+  font-weight: 600;
+  opacity: 0.7;
 }
 
 .fret-dot-idle {
@@ -235,12 +298,12 @@
   color: transparent;
 }
 
-.note-grid {
+.answer-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
   width: 100%;
-  max-width: 360px;
+  max-width: 300px;
 }
 
 .note-button {
@@ -307,18 +370,25 @@
     align-items: center;
   }
 
-  .theme-toggle {
+  .settings-cluster {
+    gap: 6px;
+  }
+
+  .theme-toggle,
+  .handedness-toggle {
     width: 40px;
     height: 22px;
   }
 
-  .theme-toggle-knob {
+  .theme-toggle-knob,
+  .handedness-toggle-knob {
     width: 18px;
     height: 18px;
     font-size: 10px;
   }
 
-  .theme-toggle-knob-dark {
+  .theme-toggle-knob-dark,
+  .handedness-toggle-knob-right {
     transform: translateX(18px);
   }
 
@@ -328,13 +398,8 @@
   }
 
   .tab-button {
-    flex-direction: row;
-    gap: 6px;
-    padding: 4px 0;
-  }
-
-  .tab-icon {
-    font-size: 16px;
+    padding: 6px 0;
+    font-size: 13px;
   }
 
   .quiz {
@@ -350,6 +415,7 @@
   .quiz-staff {
     grid-template-columns: auto 1fr;
     grid-template-areas:
+      'stage range'
       'stage score'
       'stage feedback'
       'stage grid'
@@ -363,6 +429,51 @@
       'stage target'
       'stage feedback'
       'stage next';
+  }
+
+  .quiz-sightread {
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto auto auto auto auto;
+    grid-template-areas:
+      'prompt range'
+      'prompt score'
+      'prompt feedback'
+      'answer feedback'
+      'answer next';
+  }
+
+  .range-picker {
+    grid-area: range;
+    align-items: flex-start;
+    gap: 2px;
+  }
+
+  .range-selector {
+    padding: 2px;
+    gap: 2px;
+  }
+
+  .range-button {
+    padding: 3px 8px;
+    font-size: 11px;
+  }
+
+  .range-description {
+    display: none;
+  }
+
+  .quiz-sightread .stage-prompt {
+    grid-area: prompt;
+    max-width: 150px;
+    padding: 4px;
+    align-self: center;
+  }
+
+  .quiz-sightread .stage-answer {
+    grid-area: answer;
+    max-width: 190px;
+    padding: 6px;
+    align-self: center;
   }
 
   .stage {
@@ -408,9 +519,9 @@
     padding: 6px 8px;
   }
 
-  .note-grid {
+  .answer-grid {
     grid-area: grid;
-    max-width: 260px;
+    max-width: 240px;
     gap: 6px;
   }
 

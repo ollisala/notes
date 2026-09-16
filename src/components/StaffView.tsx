@@ -2,7 +2,9 @@ import { ledgerLinePositions, type StaffValue } from '../models/staffNote';
 
 const LINE_SPACING = 16;
 const VIEW_WIDTH = 320;
-const VIEW_HEIGHT = LINE_SPACING * 11;
+// Tall enough for the extended range down to written E3 (open low-E string) and up to A5,
+// with stems and ledger lines, without clipping.
+const VIEW_HEIGHT = LINE_SPACING * 14;
 const STAFF_TOP = (VIEW_HEIGHT - LINE_SPACING * 4) / 2;
 const STAFF_LEFT = 40;
 const STAFF_RIGHT = VIEW_WIDTH - 24;
@@ -21,9 +23,10 @@ const CLEF_FONT_SIZE = LINE_SPACING * 6.4;
 
 interface StaffViewProps {
   value: StaffValue;
+  sharp?: boolean;
 }
 
-export function StaffView({ value }: StaffViewProps) {
+export function StaffView({ value, sharp = false }: StaffViewProps) {
   const noteY = STAFF_BOTTOM_Y - value * (LINE_SPACING / 2);
   const stemUp = value < 4;
   const stemX = stemUp ? NOTE_X + NOTE_WIDTH / 2 : NOTE_X - NOTE_WIDTH / 2;
@@ -69,6 +72,19 @@ export function StaffView({ value }: StaffViewProps) {
       })}
 
       <line x1={stemX} y1={noteY} x2={stemX} y2={stemY2} stroke="currentColor" strokeWidth={1.8} />
+
+      {sharp && (
+        <text
+          x={NOTE_X - NOTE_WIDTH * 2}
+          y={noteY}
+          fontSize={LINE_SPACING * 2.1}
+          textAnchor="middle"
+          dominantBaseline="central"
+          fill="currentColor"
+        >
+          &#x266F;
+        </text>
+      )}
 
       <ellipse cx={NOTE_X} cy={noteY} rx={NOTE_WIDTH / 2} ry={NOTE_HEIGHT / 2} fill="currentColor" />
     </svg>
